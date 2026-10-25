@@ -76,7 +76,7 @@ jobs:
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_PORT: ${{ vars.SERVER_PORT }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
         run: |
           set -euo pipefail
 
