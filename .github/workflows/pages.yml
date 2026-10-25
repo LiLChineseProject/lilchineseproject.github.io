@@ -1,0 +1,100 @@
+# Deploy static content to GitHub Pages and remote server
+name: Deploy static content to Pages
+
+on:
+  # Pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Manual trigger
+  workflow_dispatch:
+
+# Permissions required for Pages deployment
+permissions:
+  contents: read
+  actions: read
+  pages: write
+  id-token: write
+
+# Allow only one deployment at a time
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      # 2. Configure GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 3. Upload only the docs directory to Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./docs
+
+      # 4. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+
+      # 5. Configure SSH for the remote server
+      - name: Configure SSH
+        shell: bash
+        env:
+          SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          SERVER_KNOWN_HOSTS: ${{ secrets.SERVER_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+
+          : "${SERVER_SSH_KEY:?Missing secret SERVER_SSH_KEY}"
+          : "${SERVER_KNOWN_HOSTS:?Missing secret SERVER_KNOWN_HOSTS}"
+
+          install -m 700 -d ~/.ssh
+
+          printf '%s\n' "$SERVER_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          printf '%s\n' "$SERVER_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      # 6. Sync docs to the remote server
+      - name: Sync files to server
+        shell: bash
+        env:
+          SERVER_PATH: ${{ secrets.SERVER_PATH }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PORT: ${{ vars.SERVER_PORT }}
+        run: |
+          set -euo pipefail
+
+          : "${SERVER_HOST:?Missing secret SERVER_HOST}"
+          : "${SERVER_USER:?Missing secret SERVER_USER}"
+
+          SERVER_PORT="${SERVER_PORT:-22}"
+
+          if ! [[ "$SERVER_PORT" =~ ^[0-9]+$ ]]; then
+            echo "Invalid SERVER_PORT"
+            exit 1
+          fi
+
+          rsync -az --delete \
+            -e "ssh -i $HOME/.ssh/id_ed25519 \
+                -p ${SERVER_PORT} \
+                -o IdentitiesOnly=yes \
+                -o BatchMode=yes \
+                -o StrictHostKeyChecking=yes" \
+            ./docs/ \
+            "${SERVER_USER}@${SERVER_HOST}:/var/www/${SERVER_PATH}/"
