@@ -1,0 +1,5 @@
+# Only deployment maintainers may approve changes to workflows
+/.github/workflows/ @lilchineseproject.github.io/Bin-shou233
+
+# Protect the CODEOWNERS rules themselves
+/.github/CODEOWNERS @lilchineseproject.github.io/Bin-shou233
