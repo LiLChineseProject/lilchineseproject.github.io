@@ -5,7 +5,8 @@ on:
   # Pushes targeting the default branch
   push:
     branches: ["main"]
-    paths: ["docs/**"]
+    paths:
+      - "docs/**"
 
   # Manual trigger
   workflow_dispatch:
