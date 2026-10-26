@@ -64,6 +64,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # Restrict deployment credentials to this environment
+    environment:
+      name: production
+
     # This job only needs to read the repository
     permissions:
       contents: read
