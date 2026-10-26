@@ -125,5 +125,7 @@ jobs:
                 -o IdentitiesOnly=yes \
                 -o BatchMode=yes \
                 -o StrictHostKeyChecking=yes" \
+            --chown=${SERVER_USER}:www-data \
+            --chmod=Dg+rx,Fg+r \
             ./docs/ \
             "${SERVER_USER}@${SERVER_HOST}:/var/www/${SERVER_PATH}/"
