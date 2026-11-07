@@ -1151,9 +1151,11 @@ body.spoiler-only .topbar{display:none!important}
 .tp-reset:hover{color:var(--red);border-color:var(--red)}
 .gm-note{display:inline;color:var(--txt3);font-size:12px;margin-left:6px;white-space:nowrap}
 .chip.hidden-opt{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 35%,transparent)}
-.ev-wiki{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:5px;
+.ev{position:relative}
+.ev-wiki{position:absolute;right:12px;bottom:10px;display:inline-flex;align-items:center;gap:5px;
   font-size:12px;padding:3px 9px;border-radius:7px;border:1px solid var(--line2);
-  color:var(--txt3);text-decoration:none;transition:color .15s,border-color .15s}
+  background:var(--panel);color:var(--txt3);text-decoration:none;
+  transition:color .15s,border-color .15s;z-index:2}
 .ev-wiki:hover{color:var(--gold);border-color:var(--gold)}
 
 </style>
