@@ -102,7 +102,6 @@ jobs:
       - name: Sync files to server
         shell: bash
         env:
-          SERVER_PATH: ${{ secrets.SERVER_PATH }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_PORT: ${{ secrets.SERVER_PORT }}
@@ -119,13 +118,12 @@ jobs:
             exit 1
           fi
 
-          rsync -az --delete \
+          rsync -rltz --delete \
+            --chmod=Dg+rx,Fg+r \
             -e "ssh -i $HOME/.ssh/id_ed25519 \
                 -p ${SERVER_PORT} \
                 -o IdentitiesOnly=yes \
                 -o BatchMode=yes \
                 -o StrictHostKeyChecking=yes" \
-            --chown=${SERVER_USER}:www-data \
-            --chmod=Dg+rx,Fg+r \
             ./docs/ \
-            "${SERVER_USER}@${SERVER_HOST}:/var/www/${SERVER_PATH}/"
+            "${SERVER_USER}@${SERVER_HOST}:/"
