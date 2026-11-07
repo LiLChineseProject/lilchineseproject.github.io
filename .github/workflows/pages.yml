@@ -26,7 +26,7 @@ jobs:
   deploy_pages:
     name: Deploy to GitHub Pages
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     # Permissions required by GitHub Pages
     permissions:
