@@ -1195,6 +1195,34 @@ body.spoiler-only .topbar{display:none!important}
 .ct-k{flex:none;color:var(--txt3);min-width:26px;font-size:11px;padding-top:1px}
 .ct-v{color:var(--txt2);min-width:0;word-break:break-word}
 
+/* ===== 侧栏底部：反馈入口 ===== */
+.sb-foot{flex:none;border-top:1px solid var(--line);padding:8px 10px}
+.sb-fb{display:flex;flex-direction:column;gap:1px;text-decoration:none;
+  background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px 10px;
+  transition:border-color .15s,background .15s}
+.sb-fb:hover{border-color:var(--gold);background:color-mix(in srgb, var(--gold) 8%, var(--panel2))}
+.sb-fb-t{font-size:12.5px;font-weight:700;color:var(--txt)}
+.sb-fb-s{font-size:10.5px;color:var(--txt3);word-break:break-all}
+@media (max-width:640px){.sb-foot{padding:6px 8px}.sb-fb{padding:6px 9px}.sb-fb-t{font-size:12px}}
+
+/* ===== 反馈面板 ===== */
+.fb-mask{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(3px)}
+.fb-mask[hidden]{display:none}
+.fb-box{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:16px 16px 14px;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.fb-h{display:flex;align-items:center;justify-content:space-between;font-size:15px;font-weight:700;color:var(--txt);margin-bottom:8px}
+.fb-x{background:none;border:none;color:var(--txt3);font-size:22px;line-height:1;cursor:pointer;padding:0 2px}
+.fb-x:hover{color:var(--txt)}
+.fb-p{font-size:12.5px;line-height:1.75;color:var(--txt2);margin:0 0 10px}
+.fb-mail{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-bottom:10px}
+.fb-mail span{flex:1;min-width:0;font-size:13px;color:var(--txt);word-break:break-all;cursor:pointer}
+.fb-copy{flex:none;background:color-mix(in srgb, var(--gold) 14%, transparent);border:1px solid color-mix(in srgb, var(--gold) 40%, transparent);color:var(--gold);border-radius:7px;font-size:12px;padding:4px 10px;cursor:pointer}
+.fb-acts{display:flex;gap:8px;margin-bottom:9px}
+.fb-btn{flex:1;text-align:center;text-decoration:none;font-size:13px;padding:9px 10px;border-radius:9px;border:1px solid var(--line2);color:var(--txt2);background:var(--panel2)}
+.fb-btn.primary{background:var(--gold);border-color:var(--gold);color:#1a1a1a;font-weight:700}
+.fb-btn:hover{opacity:.88}
+.fb-tip{font-size:11px;line-height:1.6;color:var(--txt3);margin:0}
+body.fb-on{overflow:hidden}
+
 </style>
 </head>
 <body class="spoiler-only">
@@ -1293,7 +1321,31 @@ body.spoiler-only .topbar{display:none!important}
     <button class="sb-close" id="sbClose" aria-label="关闭导航">×</button>
   </div>
   <nav class="sb-scroll" id="sbScroll"></nav>
+  <div class="sb-foot">
+    <button class="sb-fb" id="fbOpen" type="button">
+      <span class="sb-fb-t">反馈建议</span>
+    </button>
+  </div>
 </aside>
+
+<div class="fb-mask" id="fbMask" hidden>
+  <div class="fb-box" role="dialog" aria-label="反馈建议">
+    <div class="fb-h">
+      <span>反馈建议</span>
+      <button class="fb-x" id="fbClose" aria-label="关闭">×</button>
+    </div>
+    <p class="fb-p">发现攻略写错了、事件漏了，或者有别的建议，写信给我，或直接私信我</p>
+    <div class="fb-mail">
+      <span id="fbAddr">1453108836@qq.com</span>
+      <button class="fb-copy" id="fbCopy" type="button">复制</button>
+    </div>
+    <div class="fb-acts">
+      <a class="fb-btn primary" id="fbMailto" href="#">用邮件App写</a>
+      <a class="fb-btn" href="https://mail.qq.com/" target="_blank" rel="noopener">去QQ邮箱</a>
+    </div>
+    <p class="fb-tip">手机/电脑上没配邮件App的话，「用邮件App写」可能没反应——那就点「复制」，再去QQ邮箱粘上地址。或使用任意在线邮件渠道</p>
+  </div>
+</div>
 
 <main id="main"></main>
 </div>
@@ -62168,7 +62220,7 @@ function renderHowto(){
   </div>
   <div class="g-card">
     <h2>${gic("cal")}其他</h2>
-    <p>· 页面为单文件 HTML，可离线使用（浏览器打开即可）；<br>· 右上角 <b><i class="fic fic-palette"></i></b> 可切换 <b>13 套主题</b>：星夜·樱粉 / 酒红 / 苔绿 / 深海蓝 / 紫罗兰 / 石墨灰 / 宣纸·朱砂 / 蛋奶黄 / 樱花粉 / 霓虹青 / 血夜 / 黑曜·月银 / 跟随系统（深浅色随系统自动切换），选择自动保存；<br>· 主题面板里还能<b>自定义背景</b>：本地图片（自动压缩保存）、图片链接或纯色取色，三选一；附<b>明暗、模糊、亮度、饱和度</b>四个滑杆；<b>顶栏、侧栏、正文</b>三块可分别选色、调透明/模糊/亮度/饱和（半透明正文自动开毛玻璃），随时还原；<br>· 按 <b>/</b> 聚焦搜索、<b>Esc</b> 清空搜索并返回；<br>· 右下角 <i class="fic fic-arrow-up"></i> 按钮回到顶部；<br>· 正文里的编号区间（如 <b>Rin个人线9-10</b>、<b>第一章主线43-47</b>）整段可点，跳到区间里的第一个事件；<br>· 主题面板最底下有「<b>重置全部设置</b>」，清空主题、背景、界面配色和剧透状态，回到第一次打开的样子；<br>· 顶栏标题点击回到「基础指南」首页。</p>
+    <p>· 页面为单文件 HTML，可离线使用（浏览器打开即可）；<br>· 右上角 <b><i class="fic fic-palette"></i></b> 可切换 <b>13 套主题</b>：星夜·樱粉 / 酒红 / 苔绿 / 深海蓝 / 紫罗兰 / 石墨灰 / 宣纸·朱砂 / 蛋奶黄 / 樱花粉 / 霓虹青 / 血夜 / 黑曜·月银 / 跟随系统（深浅色随系统自动切换），选择自动保存；<br>· 主题面板里还能<b>自定义背景</b>：本地图片（自动压缩保存）、图片链接或纯色取色，三选一；附<b>明暗、模糊、亮度、饱和度</b>四个滑杆；<b>顶栏、侧栏、正文</b>三块可分别选色、调透明/模糊/亮度/饱和（半透明正文自动开毛玻璃），随时还原；<br>· 按 <b>/</b> 聚焦搜索、<b>Esc</b> 清空搜索并返回；<br>· 右下角 <i class="fic fic-arrow-up"></i> 按钮回到顶部；<br>· 正文里的编号区间（如 <b>Rin个人线9-10</b>、<b>第一章主线43-47</b>）整段可点，跳到区间里的第一个事件；<br>· 主题面板最底下有「<b>重置全部设置</b>」，清空主题、背景、界面配色和剧透状态，回到第一次打开的样子；<br>· 顶栏标题点击回到「基础指南」首页；<br>· <b>发现攻略写错了、事件漏了，或者有别的建议</b>——点左侧导航最下面的「<b>反馈建议</b>」写信给我（1453108836@qq.com），或者直接私信我。带上事件编号（比如「第三章主线15」）最好找。</p>
   </div>`;
 }
 
@@ -63401,6 +63453,37 @@ function copyText(txt){
   });
 }
 
+
+/* ============================================================
+   反馈面板
+   ============================================================ */
+function initFeedback(){
+  const mask = $("#fbMask");
+  const open = $("#fbOpen");
+  const close = $("#fbClose");
+  const copyBtn = $("#fbCopy");
+  const mailto = $("#fbMailto");
+  const addr = $("#fbAddr");
+  if(!mask || !open) return;
+  const EMAIL = "1453108836@qq.com";
+  const SUBJ = encodeURIComponent("攻略书反馈");
+  const BODY = encodeURIComponent("想反馈的内容：\n\n（如果是某个事件有问题，请写下事件编号，比如「第三章主线15」）\n\n所在页面：\n");
+  if(mailto) mailto.href = "mailto:" + EMAIL + "?subject=" + SUBJ + "&body=" + BODY;
+  const hide = ()=>{ mask.hidden = true; document.body.classList.remove("fb-on"); };
+  const show = ()=>{ mask.hidden = false; document.body.classList.add("fb-on"); document.body.classList.remove("sb-open"); };
+  open.addEventListener("click", show);
+  if(close) close.addEventListener("click", hide);
+  mask.addEventListener("click", e=>{ if(e.target === mask) hide(); });
+  document.addEventListener("keydown", e=>{ if(e.key === "Escape" && !mask.hidden) hide(); });
+  if(copyBtn) copyBtn.addEventListener("click", ()=>{
+    copyText(EMAIL).then(ok=>{
+      copyBtn.textContent = ok ? "已复制" : "复制失败";
+      setTimeout(()=>{ copyBtn.textContent = "复制"; }, 1600);
+    });
+  });
+  if(addr) addr.addEventListener("click", ()=>{ copyText(EMAIL).then(ok=>{ if(ok) addr.textContent = "已复制 " + EMAIL; setTimeout(()=>{ addr.textContent = EMAIL; }, 1600); }); });
+}
+
 /* ============================================================
    防剧透
    ============================================================ */
@@ -63554,6 +63637,7 @@ initTheme();
 initBgPanel();
 initSpoiler();
 initResetBtn();
+initFeedback();
 
 </script>
 </body>
