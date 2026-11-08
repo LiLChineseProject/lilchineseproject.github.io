@@ -1152,6 +1152,11 @@ body.spoiler-only .topbar{display:none!important}
 .gm-note{display:inline;color:var(--txt3);font-size:12px;margin-left:6px;white-space:nowrap}
 .chip.hidden-opt{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 35%,transparent)}
 .ev{position:relative}
+/* Wiki 按钮是绝对定位，卡片底部要留出空间，别让按钮压住正文/徽章 */
+.ev.has-wiki{padding-bottom:40px}
+.ev:has(.ev-wiki){padding-bottom:40px}
+@media (max-width:640px){ .ev.has-wiki{padding-bottom:42px} }
+
 .ev-wiki{position:absolute;right:12px;bottom:10px;display:inline-flex;align-items:center;gap:5px;
   font-size:12px;padding:3px 9px;border-radius:7px;border:1px solid var(--line2);
   background:var(--panel);color:var(--txt3);text-decoration:none;
@@ -59435,7 +59440,7 @@ function evCard(e, opts){
       </div>
     </article>`;
   }
-  return `<article class="ev" id="ev-${escAttr(idKey)}">
+  return `<article class="ev${e.wiki?" has-wiki":""}" id="ev-${escAttr(idKey)}">
     <div class="ev-title">
       <span class="ev-no">${esc(e.no)}</span>
       <span class="ev-en">${esc(e.en)}</span>
